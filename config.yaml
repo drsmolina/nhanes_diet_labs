@@ -1,0 +1,56 @@
+project:
+  name: nhanes_diet_labs
+  seed: 42
+
+paths:
+  raw: data_raw
+  tidy: data_tidy
+  figs: figures
+  reports: reports
+
+cycles:
+  - 2017_2018
+  - 2019_2020
+
+files:
+  demo: DEMO
+  diet_day1: DR1TOT
+  labs:
+    hba1c: GHB
+    hscrp: HSCRP
+    hdl: HDL
+    trig: TRIGLY
+  body: BMX
+
+design_vars:
+  weight_diet_day1: WTDRD1
+  weight_exam: WTMEC2YR
+  strata: SDMVSTRA
+  psu: SDMVPSU
+
+features:
+  kcal_col: DR1TKCAL
+  carbs_g: DR1TCARB
+  protein_g: DR1TPROT
+  fat_g: DR1TTFAT
+  fiber_g: DR1TFIBE
+  added_sugar_g: DR1TSUGA
+  sodium_mg: DR1TSODI
+  fiber_per_1000kcal: true
+  sodium_per_2000kcal: true
+
+qa:
+  min_rows: 4000
+  kcal_range: [500, 6000]
+  max_hba1c: 15.0
+
+models:
+  outcomes: [hba1c, hdl, hscrp]
+  covariates: [age, sex_female, bmi]
+  weights: diet_day1
+  robust_se: HC3
+  log_transform_crp: true
+
+viz:
+  dpi: 160
+  width_px: 1400
