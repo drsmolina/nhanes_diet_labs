@@ -1,0 +1,20 @@
+diet_day1:
+  added_sugar: [DR1TSUGA, DR1T_SUGARADD]
+  sodium_mg: [DR1TSODI]
+labs:
+  hba1c: [LBXGH, LBXGHSI, LBXGH_HSI]
+  hscrp: [LBXHSCRP, LBXCRP]
+  hdl:   [LBDHDD, LBXHDD, LBDHDL, LBXHDL]
+  trig:  [LBXTR, LBDTRSI, LBXTR_NO]
+body:
+  bmi: [BMXBMI]
+demo:
+  age: [RIDAGEYR]
+  sex: [RIAGENDR]
+  raceeth: [RIDRETH3]
+  pir: [INDFMPIR]
+design:
+  strata: [SDMVSTRA]
+  psu: [SDMVPSU]
+  weight_diet_day1: [WTDRD1]
+  weight_exam: [WTMEC2YR]
