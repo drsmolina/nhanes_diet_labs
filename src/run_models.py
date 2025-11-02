@@ -40,10 +40,11 @@ def main():
 
     # Define model specs
     model_specs = {
-        "hba1c": ["carb_pct", "fiber_density", "sugar_pct", "fat_pct", "age", "sex_female", "bmi"],
-        "hdl": ["fat_pct", "fiber_density", "sugar_pct", "age", "sex_female", "bmi"],
-        "hscrp": ["fiber_density", "age", "sex_female", "bmi"],
-    }
+    "hba1c": ["sugar_pct", "fiber_density", "fat_pct", "age", "sex_female", "bmi"],  # drop carb_pct
+    "hdl":   ["fat_pct", "fiber_density", "sugar_pct", "age", "sex_female", "bmi"],
+    "hscrp": ["fiber_density", "age", "sex_female", "bmi"]
+}
+
 
     results = []
 
