@@ -1,40 +1,49 @@
 # 🥦 What You Eat, What Your Labs Say  
-*Linking NHANES dietary patterns to metabolic biomarkers (2017–2018)*  
+**An interactive dashboard linking diet patterns to lab biomarkers**  
+*Built with NHANES 2017–2018 data and Streamlit*
 
-![Forest Plot](figures/forest_models.png)
+![App Screenshot](figures/forest_models.png)
+
+---
+
+## 🌍 Live Demo
+**👉 Try the interactive site:**  
+[https://nhanesdietlabs.streamlit.app)
+
+Explore how changing your diet (fiber, sugar, fat, carbs, BMI, age) influences predicted lab markers —  
+**HbA1c**, **HDL**, and **hs-CRP** — based on real U.S. national data.  
 
 ---
 
 ## 📘 Overview
-This project explores how daily nutrient intake patterns — from carbohydrates, fats, fiber, and added sugars — relate to key laboratory biomarkers of metabolic and cardiovascular health.  
-
-Using **NHANES 2017–2018** data, we built a fully reproducible Python pipeline to merge dietary recalls (WWEIA/FNDDS) with biomarker data (HbA1c, HDL, hs-CRP). All analyses apply survey weights and robust standard errors.
-
----
-
-## 🧩 Methodology
-1. **Data ingestion:** Automated XPT/CSV loading and harmonization across NHANES domains (`DEMO`, `DR1TOT`, `GHB`, `HDL`, `HSCRP`, `BMX`).
-2. **Feature engineering:** Derived energy-normalized nutrient densities (fiber g/1000 kcal, sodium mg/2000 kcal, % kcal from macronutrients).
-3. **Exploratory analysis:** Distribution plots, correlation heatmaps, and PCA-based nutrient patterning.
-4. **Modeling:** Weighted least squares regressions (`statsmodels.WLS`) with HC3 robust SEs. Outcomes: HbA1c, HDL, hs-CRP.
-5. **Reporting:** Automated Markdown and figure outputs.
+This project analyzes NHANES data to reveal how everyday nutrient intake patterns relate to key health biomarkers.  
+It merges dietary recall (WWEIA/FNDDS) and lab data (HbA1c, HDL, hs-CRP), builds weighted regression models, and then turns them into an interactive tool.
 
 ---
 
-## 🔬 Key Findings
-**Glycemic control (HbA1c):**  
-Higher BMI, age, and % kcal from carbohydrate were associated with *higher* HbA1c.  
-More fiber per 1000 kcal predicted *lower* HbA1c.
+## 🧩 Pipeline
+1. **Ingestion & Harmonization**  
+   Load and merge DEMO, DR1TOT, GHB, HDL, HSCRP, and BMX data.  
+2. **Feature Engineering**  
+   Compute normalized nutrient metrics (fiber density, sodium density, %kcal carbs/fats/protein).  
+3. **Exploratory Data Analysis**  
+   Generate histograms, correlation maps, PCA nutrient plots.  
+4. **Modeling**  
+   Weighted least squares with robust HC3 SEs for HbA1c, HDL, and hs-CRP.  
+5. **Interactive Visualization**  
+   Streamlit web app with real-time predictions and educational “Insights” tab.
 
-**Lipid profile (HDL):**  
-Higher BMI and added sugar intake predicted *lower* HDL.  
-Greater fiber and total-fat % kcal were linked to *higher* HDL.
+---
 
-**Inflammation (hs-CRP):**  
-Higher BMI and age predicted *higher* hs-CRP.  
-Fiber density was inversely associated with inflammation.
-
-> Overall: **High-fiber, low–added-sugar diets** were consistently associated with *healthier biomarker profiles* even after accounting for age, sex, and BMI.
+## 💡 Key Findings
+| Outcome | Predictor | Direction | Meaning |
+|----------|------------|------------|----------|
+| **HbA1c** | Higher added sugar | 🔺 | Higher average blood sugar |
+| **HbA1c** | Higher fiber | 🔻 | Better glycemic control |
+| **HDL** | Higher sugar intake | 🔻 | Lower “good” cholesterol |
+| **HDL** | Higher fat & fiber | 🔺 | Healthier lipid profile |
+| **hs-CRP** | Higher BMI | 🔺 | More inflammation |
+| **hs-CRP** | Higher fiber | 🔻 | Less inflammation |
 
 ---
 
@@ -42,21 +51,25 @@ Fiber density was inversely associated with inflammation.
 | File | Description |
 |------|--------------|
 | `data_tidy/diet_labs_analytic.csv` | Clean analytic dataset |
-| `figures/hists_labs.png` | Distributions of HbA1c, HDL, log(hs-CRP) |
+| `figures/hists_labs.png` | Lab distributions |
 | `figures/corr_heatmap.png` | Nutrient–lab correlations |
-| `figures/scatter_carb_hba1c.png` | Carb % vs HbA1c colored by fiber |
-| `figures/pca_biplot.png` | PCA of nutrient densities colored by HbA1c |
-| `figures/forest_models.png` | Regression forest plot (main results) |
-| `reports/summary.md` | Written summary and interpretation |
+| `figures/scatter_carb_hba1c.png` | Carbs vs HbA1c |
+| `figures/pca_biplot.png` | PCA nutrient pattern |
+| `figures/forest_models.png` | Regression forest plot |
+| `reports/summary.md` | Narrative report |
+| `app.py` | Streamlit dashboard |
 
 ---
 
-## ⚙️ Reproducibility
+## ⚙️ Running Locally
 ```bash
-# Set up environment
+# Setup
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# Run pipeline
+# Run full analysis pipeline
 make all
+
+# Launch interactive dashboard
+streamlit run app.py
