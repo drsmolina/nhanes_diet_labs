@@ -1,31 +1,62 @@
-# NHANES Diet Labs Analysis  
+# 🥦 What You Eat, What Your Labs Say  
+*Linking NHANES dietary patterns to metabolic biomarkers (2017–2018)*  
 
-This repository contains code and analyses for linking daily nutrient intake patterns to laboratory biomarkers (HbA1c, lipids, hs-CRP) using data from the NHANES cycles 2017–2018 and 2019–2020. The project sets up a reproducible pipeline to download raw XPT files, harmonize variables, engineer nutrient features, perform exploratory data analysis, and run survey-weighted models with robust standard errors.  
+![Forest Plot](figures/forest_models.png)
 
-## Quickstart  
+---
 
-1. Clone the repository.  
-2. Install dependencies with `pip install -r requirements.txt`.  
-3. Run the full pipeline via:  
+## 📘 Overview
+This project explores how daily nutrient intake patterns — from carbohydrates, fats, fiber, and added sugars — relate to key laboratory biomarkers of metabolic and cardiovascular health.  
 
-```
+Using **NHANES 2017–2018** data, we built a fully reproducible Python pipeline to merge dietary recalls (WWEIA/FNDDS) with biomarker data (HbA1c, HDL, hs-CRP). All analyses apply survey weights and robust standard errors.
+
+---
+
+## 🧩 Methodology
+1. **Data ingestion:** Automated XPT/CSV loading and harmonization across NHANES domains (`DEMO`, `DR1TOT`, `GHB`, `HDL`, `HSCRP`, `BMX`).
+2. **Feature engineering:** Derived energy-normalized nutrient densities (fiber g/1000 kcal, sodium mg/2000 kcal, % kcal from macronutrients).
+3. **Exploratory analysis:** Distribution plots, correlation heatmaps, and PCA-based nutrient patterning.
+4. **Modeling:** Weighted least squares regressions (`statsmodels.WLS`) with HC3 robust SEs. Outcomes: HbA1c, HDL, hs-CRP.
+5. **Reporting:** Automated Markdown and figure outputs.
+
+---
+
+## 🔬 Key Findings
+**Glycemic control (HbA1c):**  
+Higher BMI, age, and % kcal from carbohydrate were associated with *higher* HbA1c.  
+More fiber per 1000 kcal predicted *lower* HbA1c.
+
+**Lipid profile (HDL):**  
+Higher BMI and added sugar intake predicted *lower* HDL.  
+Greater fiber and total-fat % kcal were linked to *higher* HDL.
+
+**Inflammation (hs-CRP):**  
+Higher BMI and age predicted *higher* hs-CRP.  
+Fiber density was inversely associated with inflammation.
+
+> Overall: **High-fiber, low–added-sugar diets** were consistently associated with *healthier biomarker profiles* even after accounting for age, sex, and BMI.
+
+---
+
+## 📊 Outputs
+| File | Description |
+|------|--------------|
+| `data_tidy/diet_labs_analytic.csv` | Clean analytic dataset |
+| `figures/hists_labs.png` | Distributions of HbA1c, HDL, log(hs-CRP) |
+| `figures/corr_heatmap.png` | Nutrient–lab correlations |
+| `figures/scatter_carb_hba1c.png` | Carb % vs HbA1c colored by fiber |
+| `figures/pca_biplot.png` | PCA of nutrient densities colored by HbA1c |
+| `figures/forest_models.png` | Regression forest plot (main results) |
+| `reports/summary.md` | Written summary and interpretation |
+
+---
+
+## ⚙️ Reproducibility
+```bash
+# Set up environment
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Run pipeline
 make all
-```  
-
-   which will ingest data, build features, execute EDA notebooks, run models, and generate reports.  
-
-Alternatively, run individual steps:  
-
-- `make ingest` – download and harmonize raw NHANES data into tidy format.  
-- `make features` – engineer nutrient features and output analytic dataset.  
-- `make eda` – produce exploratory figures.  
-- `make model` – run weighted OLS models.  
-- `make report` – generate the summary report.  
-
-## Data Sources  
-
-This project uses publicly available NHANES data from the National Center for Health Statistics (NCHS). Please ensure you comply with NHANES data usage policies when downloading and using these datasets. Raw data files are not committed to this repository (see `.gitignore`); they will be downloaded into `data_raw/` during ingestion.  
-
-## Disclaimer  
-
-This repository is for educational and research purposes only. The analyses herein do not constitute medical advice. Interpretations are based on observational survey data and should not inform medical decisions. 
